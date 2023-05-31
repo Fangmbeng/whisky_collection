@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+    <h1 class="text-center">{{ current_user.username }}'s Pretigious Alcohol Collection</h1>
+    {% for post in posts %}
+        <div class="card my-3">
+            <div class="card-header">
+            {{ post.brand }}
+            </div>
+            <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>{{ post.model }}</p>
+                <footer class="blockquote-footer">{{ post.author.username }} on
+                    <cite title="Source Title">{{ post.date_created.strftime('%A, %B %d at %I:%M%p') }}</cite>
+                </footer>
+            </blockquote>
+            <a href="{{ url_for('api.get_post', post_id=post.id) }}" class="btn btn-primary mt-3">See More</a>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Alcohol %</th>
+                <th scope="col">Alcohol Class</th>
+                <th scope="col">Date created</th>
+                <th scope="col">See More</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{ post.brand }}</td>
+                    <td>{{ post.alcohol_level }}</td>
+                    <td>{{ post.class_alcohol }}</td>
+                    <td>{{ post.date_created.strftime('%A, %B %d at %I:%M%p') }}</td>
+                    <td><a href="{{ url_for('api.get_post', post_id=post.id) }}" class="btn btn-primary mt-3">See More</a></td>
+                </tr>
+            </tbody>
+          </table>
+    {% endfor %}
+{% else %}
+    <div class="container">
+        <h1 class="text-center">Welcome Pretigious Alcohol Collection</h1>
+    </div>
+{% endif %}
+
+{% endblock %}
