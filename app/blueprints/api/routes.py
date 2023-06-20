@@ -92,7 +92,6 @@ def index_():
     return {'token':token, 'token_expiration':user.token_expiration}
 
 @api.route('/posts')
-@basic_auth.login_required
 def getposts():
     posts = Post.query.all()
     return [p.to_dict() for p in posts]
@@ -144,7 +143,7 @@ def createuser():
     return new_user.to_dict(), 201
     
 @api.route('/post/edit/<int:post_id>', methods=['POST'])
-@basic_auth.login_required
+@token_auth.login_required
 def editpost(post_id):
     post = Post.query.get(post_id)
     if not request.is_json:
@@ -155,14 +154,14 @@ def editpost(post_id):
             return("error:f{field} must be in request body"), 400
     brand = data.get('brand')
     alcohol_level = data.get("alcohol_level")
-    class_alcohol = data.get("class_level")
-    user = data.get("id")
+    class_alcohol = data.get("class_alcohol")
+    user = token_auth.current_user()
     post.update(brand=brand, alcohol_level=alcohol_level, class_alcohol= class_alcohol, user_id=user)
     return post.to_dict(), 201
 
 
 @api.route('/post/delete/<int:post_id>', methods=['POST'])
-@basic_auth.login_required
+@token_auth.login_required
 def deletepost(post_id):
     post = Post.query.get(post_id)
     if not request.is_json:
