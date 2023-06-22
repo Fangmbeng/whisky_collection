@@ -113,8 +113,8 @@ def createpost():
     brand = data.get('brand')
     alcohol_level = data.get("alcohol_level")
     class_alcohol = data.get("class_alcohol")
-    user = token_auth.current_user()
-    new_post = Post(brand=brand, alcohol_level=alcohol_level, class_alcohol=class_alcohol, user_id=user.id)
+    #user = data.get('')
+    new_post = Post(brand=brand, alcohol_level=alcohol_level, class_alcohol=class_alcohol) #user_id=user.id
     return new_post.to_dict(), 201
     
 
@@ -155,8 +155,8 @@ def editpost(post_id):
     brand = data.get('brand')
     alcohol_level = data.get("alcohol_level")
     class_alcohol = data.get("class_alcohol")
-    user = token_auth.current_user()
-    post.update(brand=brand, alcohol_level=alcohol_level, class_alcohol= class_alcohol, user_id=user)
+    #user = token_auth.current_user()
+    post.update(brand=brand, alcohol_level=alcohol_level, class_alcohol= class_alcohol) #user_id=user)
     return post.to_dict(), 201
 
 
