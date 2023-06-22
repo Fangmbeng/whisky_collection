@@ -91,7 +91,7 @@ def index_():
     token = user.get_token()
     return {'token':token, 'token_expiration':user.token_expiration}
 
-@api.route('/posts')
+@api.route('/posts', methods=['GET'])
 def getposts():
     posts = Post.query.all()
     return [p.to_dict() for p in posts]
