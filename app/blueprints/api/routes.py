@@ -123,6 +123,28 @@ def get_user(user_id):
     user = User.query.get(user_id)
     return user.to_dict()
 
+@api.route('/user', methods=['GET','POST'])
+def get_username():
+    if not request.is_json:
+        return("your request content-type is not JSON"), 400
+    data=request.json
+    for field in ['username', 'password']:
+        if field not in data:
+            return("error:f{field} must be in request body"), 400
+    #email = data.get('email')
+    username = data.get("username")
+    password = data.get('password')
+            # Query our user table to see if there are any users with either username or email from form
+    get_user = User.query.filter_by(username=username).first()
+        # If the query comes back with any results
+    if get_user is None:
+        return ('Please Sign Up to create an account.'), 400
+    elif get_user is not None and get_user.check_password(password):
+        # log the user in
+        login_user(get_user)
+    return get_user.to_dict(), 201
+
+
 @api.route('/users', methods=['POST'])
 def createuser():
     if not request.is_json:
