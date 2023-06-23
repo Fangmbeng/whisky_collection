@@ -87,14 +87,15 @@ def delete_post(post_id):
 @api.route('/token')
 #@basic_auth.login_required
 def index_():
-    user = basic_auth.current_user()
+    user = User.username
     token = user.get_token()
     return {'token':token, 'token_expiration':user.token_expiration}
 
 @api.route('/post', methods=['GET'])
 def getposts():
     posts = Post.query.all()
-    return [p.to_dict() for p in posts]
+    return jsonify([p.to_dict() for p in posts])
+        
 
 @api.route('/post/<int:post_id>')
 def getpost(post_id):
